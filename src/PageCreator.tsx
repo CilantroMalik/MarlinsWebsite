@@ -81,6 +81,72 @@ export const PageCreator = () => {
         newGridHeights[currRow] = newHeight.toString() + "rem"
         setGridHeights(newGridHeights)
     }
+
+    const changeCurrRowLayout = (newLayout: string) => {
+        setCurrRowLayout(newLayout)
+        const newGridConfig = [...gridConfig]
+        newGridConfig[currRow] = newLayout
+        setGridConfig(newGridConfig)
+        const newGridContentType = [...gridContentType]
+        const newGridContent = [...gridContent]
+        const newNumCells = newLayout.split("-").length
+        if (gridContentType[currRow].length < newNumCells) {
+            while (newGridContentType[currRow].length < newNumCells) {
+                newGridContentType[currRow].push("Select...")
+                newGridContent[currRow].push("")
+            }
+        } else if (gridContentType[currRow].length > newNumCells) {
+            while (newGridContentType[currRow].length > newNumCells) {
+                newGridContentType[currRow].pop()
+                newGridContent[currRow].pop()
+            }
+        }
+        setGridContentType(newGridContentType)
+        setGridContent(newGridContent)
+    }
+
+    const changeCurrCellContent = (newContent: string) => {
+        setCurrCellContent(newContent)
+        const newGridContentType = [...gridContentType]
+        newGridContentType[currRow][currCell] = newContent
+        setGridContentType(newGridContentType)
+        const newGridContent = [...gridContent]
+        newGridContent[currRow][currCell] = ""
+        setGridContent(newGridContent)
+    }
+
+    const changeCurrRow = (newRow: number) => {
+        if (currRow !== newRow) {
+            setCurrCell(-1)
+        }
+        setCurrRow(newRow)
+        setCurrRowLayout(gridConfig[newRow])
+        setCurrRowHeight(parseInt(gridHeights[newRow].replace("rem", "")))
+    }
+
+    const changeCurrCell = (newCell: number) => {
+        setCurrCell(newCell)
+        setCurrCellContent(gridContentType[currRow][newCell])
+    }
+
+    const changeGridContent = (row: number, cell: number, newContent: string) => {
+        const newGridContent = [...gridContent]
+        newGridContent[row][cell] = newContent
+    }
+
+    const getBorder = (n: number) => {
+        return currRow === n ? "0.2rem solid #8f8fcc" : "0.2rem solid #8a8a8a"
+    }
+    const getCellContent = (row: number, cell: number) => {
+        if (gridContentType[row][cell] === "Text") {
+            if (currRow === row && currCell === cell) {
+                return <ReactQuill theme="snow" style={{width: "100%", height: "100%", margin: "0rem", borderRadius: "1.5rem", border: "0px", display: "flex", flexDirection: "column"}} value={gridContent[row][cell]} onChange={(value) => changeGridContent(row, cell, value)} />
+            } else {
+                return <div dangerouslySetInnerHTML={{__html: gridContent[row][cell]}}></div>
+            }
+        }
+        return <div></div>
+    }
     return (
         <div style={{display: "flex", flexDirection: "column"}}>
             <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", marginLeft: "1.5rem", marginRight: "1.5rem"}}>
