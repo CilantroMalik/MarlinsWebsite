@@ -17,6 +17,70 @@ export const PageCreator = () => {
     const [currCell, setCurrCell] = useState(-1)
     const [currCellContent, setCurrCellContent] = useState("Select...")
     const [test, setTest] = useState("")
+
+    const createPage = () => {
+        fetch("http://localhost:8000/v1/add-page", {
+            method: "POST",
+            mode: 'cors',
+            headers: {
+                'Access-Control-Allow-Origin':'*',
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                name: name,
+                route: route,
+                category: category
+            })
+        })
+        setCategory("")
+        setName("")
+        setRoute("")
+    }
+
+    const changeNumRows = (newNum: number) => {
+        if (Number.isNaN(newNum)) {
+           return
+        }
+        setNumRows(newNum)
+        if (gridConfig.length < newNum) {
+            const newGridConfig = [...gridConfig]
+            const newGridHeights = [...gridHeights]
+            const newGridContentType = [...gridContentType]
+            const newGridContent = [...gridContent]
+            while (newGridConfig.length < newNum) {
+                newGridConfig.push("1")
+                newGridHeights.push("10rem")
+                newGridContentType.push(["Select..."])
+                newGridContent.push([""])
+            }
+            setGridConfig(newGridConfig)
+            setGridHeights(newGridHeights)
+            setGridContentType(newGridContentType)
+            setGridContent(newGridContent)
+        } else {
+            const newGridConfig = [...gridConfig]
+            const newGridHeights = [...gridHeights]
+            const newGridContentType = [...gridContentType]
+            const newGridContent = [...gridContent]
+            while (newGridConfig.length > newNum) {
+                newGridConfig.pop()
+                newGridHeights.pop()
+                newGridContentType.pop()
+                newGridContent.pop()
+            }
+            setGridConfig(newGridConfig)
+            setGridHeights(newGridHeights)
+            setGridContentType(newGridContentType)
+            setGridContent(newGridContent)
+        }
+    }
+
+    const changeCurrRowHeight = (newHeight: number) => {
+        setCurrRowHeight(newHeight)
+        const newGridHeights = [...gridHeights]
+        newGridHeights[currRow] = newHeight.toString() + "rem"
+        setGridHeights(newGridHeights)
+    }
     return (
         <div style={{display: "flex", flexDirection: "column"}}>
             <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", marginLeft: "1.5rem", marginRight: "1.5rem"}}>
