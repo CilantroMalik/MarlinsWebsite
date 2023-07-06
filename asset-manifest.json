@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/MarlinsWebsite/static/css/main.42a09b79.css",
+    "main.js": "/MarlinsWebsite/static/js/main.77b4dcf4.js",
+    "index.html": "/MarlinsWebsite/index.html",
+    "main.42a09b79.css.map": "/MarlinsWebsite/static/css/main.42a09b79.css.map",
+    "main.77b4dcf4.js.map": "/MarlinsWebsite/static/js/main.77b4dcf4.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.42a09b79.css",
+    "static/js/main.77b4dcf4.js"
+  ]
+}
