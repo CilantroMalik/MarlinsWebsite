@@ -137,12 +137,53 @@ export const PageCreator = () => {
     const getBorder = (n: number) => {
         return currRow === n ? "0.2rem solid #8f8fcc" : "0.2rem solid #8a8a8a"
     }
+
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files !== null) {
+            let fd = new FormData()
+            fd.append('image', e.target.files[0])
+            fetch("http://localhost:8000/v1/upload-image", {
+                    method: "POST",
+                    mode: 'cors',
+                    headers: {'Access-Control-Allow-Origin': '*'},
+                    body: fd
+                }
+            ).then(res => {
+                refreshImages()
+            })
+            const newGridContent = [...gridContent]
+            newGridContent[currRow][currCell] = e.target.files[0].name
+            setGridContent(newGridContent)
+        }
+    }
+
+    const deleteImage = () => {
+
+    }
+
+    const refreshImages = () => {
+        
+    }
+
     const getCellContent = (row: number, cell: number) => {
         if (gridContentType[row][cell] === "Text") {
             if (currRow === row && currCell === cell) {
                 return <ReactQuill theme="snow" style={{width: "100%", height: "100%", margin: "0rem", borderRadius: "1.5rem", border: "0px", display: "flex", flexDirection: "column"}} value={gridContent[row][cell]} onChange={(value) => changeGridContent(row, cell, value)} />
             } else {
                 return <div dangerouslySetInnerHTML={{__html: gridContent[row][cell]}}></div>
+            }
+        } else if (gridContentType[row][cell] === "Image") {
+            if (currRow === row && currCell === cell) {
+                return <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}}>
+                    <h5 style={{marginLeft: "1.5rem", marginRight: "1rem"}}>Upload New Image:</h5>
+                    <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e)}/>
+                    <button onClick={deleteImage}>Delete Uploaded Image</button>
+                </div>
+            } else {
+                if (gridContent[row][cell] !== "") {
+                    return <img style={{width: "auto", height: "100%"}} src={"http://localhost:8000/static/"+gridContent[row][cell]} alt={gridContent[row][cell]}/>
+                }
+                return <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}><h3>No image selected</h3></div>
             }
         }
         return <div></div>
