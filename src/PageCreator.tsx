@@ -147,6 +147,77 @@ export const PageCreator = () => {
         }
         return <div></div>
     }
+
+    const getGrid = () => {
+        return Array.from(Array(numRows).keys()).map(n => {
+            const divStyle = {display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "1.5rem", width: "100%", height: gridHeights[n], backgroundColor: "#525252", border: getBorder(n)}
+            switch (gridConfig[n]) {
+                case "1":
+                    return (<div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}} onClick={() => changeCurrRow(n)}>
+                        <div style={{...divStyle, flexDirection: "column", margin: "0.5rem 2rem", borderWidth: currRow === n && currCell === 0 ? "0.4rem" : "0.2rem"}} onClick={() => changeCurrCell(0)}>{getCellContent(n, 0)}</div>
+                    </div>)
+                case "1-1":
+                    return (<div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}} onClick={() => changeCurrRow(n)}>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 2rem", borderWidth: currRow === n && currCell === 0 ? "0.4rem" : "0.2rem"}} onClick={() => changeCurrCell(0)}>{getCellContent(n, 0)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 2rem 0.5rem 0.5rem", borderWidth: currRow === n && currCell === 1 ? "0.4rem" : "0.2rem"}} onClick={() => changeCurrCell(1)}>{getCellContent(n, 1)}</div>
+                    </div>)
+                case "1-1-1":
+                    return (<div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}} onClick={() => changeCurrRow(n)}>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 2rem", borderWidth: currRow === n && currCell === 0 ? "0.4rem" : "0.2rem"}} onClick={() => changeCurrCell(0)}>{getCellContent(n, 0)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 0.5rem", borderWidth: currRow === n && currCell === 1 ? "0.4rem" : "0.2rem"}} onClick={() => changeCurrCell(1)}>{getCellContent(n, 1)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 2rem 0.5rem 0.5rem", borderWidth: currRow === n && currCell === 2 ? "0.4rem" : "0.2rem"}} onClick={() => changeCurrCell(2)}>{getCellContent(n, 2)}</div>
+                    </div>)
+                case "1-2":
+                    return (<div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}} onClick={() => changeCurrRow(n)}>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 2rem", borderWidth: currRow === n && currCell === 0 ? "0.4rem" : "0.2rem", flex: "1 1 0"}} onClick={() => changeCurrCell(0)}>{getCellContent(n, 0)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 2rem 0.5rem 0.5rem", borderWidth: currRow === n && currCell === 1 ? "0.4rem" : "0.2rem", flex: "2 1 0"}} onClick={() => changeCurrCell(1)}>{getCellContent(n, 1)}</div>
+                    </div>)
+                case "2-1":
+                    return (<div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}} onClick={() => changeCurrRow(n)}>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 2rem", borderWidth: currRow === n && currCell === 0 ? "0.4rem" : "0.2rem", flex: "2 1 0"}} onClick={() => changeCurrCell(0)}>{getCellContent(n, 0)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 2rem 0.5rem 0.5rem", borderWidth: currRow === n && currCell === 1 ? "0.4rem" : "0.2rem", flex: "1 1 0"}} onClick={() => changeCurrCell(1)}>{getCellContent(n, 1)}</div>
+                    </div>)
+                case "1-1-1-1":
+                    return (<div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}} onClick={() => changeCurrRow(n)}>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 2rem", borderWidth: currRow === n && currCell === 0 ? "0.4rem" : "0.2rem"}} onClick={() => changeCurrCell(0)}>{getCellContent(n, 0)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 0.5rem", borderWidth: currRow === n && currCell === 1 ? "0.4rem" : "0.2rem"}} onClick={() => changeCurrCell(1)}>{getCellContent(n, 1)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 0.5rem", borderWidth: currRow === n && currCell === 2 ? "0.4rem" : "0.2rem"}} onClick={() => changeCurrCell(2)}>{getCellContent(n, 2)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 2rem 0.5rem 0.5rem", borderWidth: currRow === n && currCell === 3 ? "0.4rem" : "0.2rem"}} onClick={() => changeCurrCell(3)}>{getCellContent(n, 3)}</div>
+                    </div>)
+                case "2-1-1":
+                    return (<div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}} onClick={() => changeCurrRow(n)}>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 2rem", borderWidth: currRow === n && currCell === 0 ? "0.4rem" : "0.2rem", flex: "2 1 0"}} onClick={() => changeCurrCell(0)}>{getCellContent(n, 0)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 0.5rem", borderWidth: currRow === n && currCell === 1 ? "0.4rem" : "0.2rem", flex: "1 1 0"}} onClick={() => changeCurrCell(1)}>{getCellContent(n, 1)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 2rem 0.5rem 0.5rem", borderWidth: currRow === n && currCell === 2 ? "0.4rem" : "0.2rem", flex: "1 1 0"}} onClick={() => changeCurrCell(2)}>{getCellContent(n, 2)}</div>
+                    </div>)
+                case "1-2-1":
+                    return (<div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}} onClick={() => changeCurrRow(n)}>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 2rem", borderWidth: currRow === n && currCell === 0 ? "0.4rem" : "0.2rem", flex: "1 1 0"}} onClick={() => changeCurrCell(0)}>{getCellContent(n, 0)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 0.5rem", borderWidth: currRow === n && currCell === 1 ? "0.4rem" : "0.2rem", flex: "2 1 0"}} onClick={() => changeCurrCell(1)}>{getCellContent(n, 1)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 2rem 0.5rem 0.5rem", borderWidth: currRow === n && currCell === 2 ? "0.4rem" : "0.2rem", flex: "1 1 0"}} onClick={() => changeCurrCell(2)}>{getCellContent(n, 2)}</div>
+                    </div>)
+                case "1-1-2":
+                    return (<div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}} onClick={() => changeCurrRow(n)}>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 2rem", borderWidth: currRow === n && currCell === 0 ? "0.4rem" : "0.2rem", flex: "1 1 0"}} onClick={() => changeCurrCell(0)}>{getCellContent(n, 0)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 0.5rem", borderWidth: currRow === n && currCell === 1 ? "0.4rem" : "0.2rem", flex: "1 1 0"}} onClick={() => changeCurrCell(1)}>{getCellContent(n, 1)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 2rem 0.5rem 0.5rem", borderWidth: currRow === n && currCell === 2 ? "0.4rem" : "0.2rem", flex: "2 1 0"}} onClick={() => changeCurrCell(2)}>{getCellContent(n, 2)}</div>
+                    </div>)
+                case "1-3":
+                    return (<div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}} onClick={() => changeCurrRow(n)}>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 2rem", borderWidth: currRow === n && currCell === 0 ? "0.4rem" : "0.2rem", flex: "1 1 0"}} onClick={() => changeCurrCell(0)}>{getCellContent(n, 0)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 2rem 0.5rem 0.5rem", borderWidth: currRow === n && currCell === 1 ? "0.4rem" : "0.2rem", flex: "3 1 0"}} onClick={() => changeCurrCell(1)}>{getCellContent(n, 1)}</div>
+                    </div>)
+                case "3-1":
+                    return (<div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}} onClick={() => changeCurrRow(n)}>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 2rem", borderWidth: currRow === n && currCell === 0 ? "0.4rem" : "0.2rem", flex: "3 1 0"}} onClick={() => changeCurrCell(0)}>{getCellContent(n, 0)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 2rem 0.5rem 0.5rem", borderWidth: currRow === n && currCell === 1 ? "0.4rem" : "0.2rem", flex: "1 1 0"}} onClick={() => changeCurrCell(1)}>{getCellContent(n, 1)}</div>
+                    </div>)
+                default:
+                    return (<div></div>)
+            }
+        })
+    }
+
     return (
         <div style={{display: "flex", flexDirection: "column"}}>
             <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", marginLeft: "1.5rem", marginRight: "1.5rem"}}>
