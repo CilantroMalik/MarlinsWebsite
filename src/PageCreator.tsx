@@ -149,7 +149,7 @@ export const PageCreator = () => {
                     body: fd
                 }
             ).then(res => {
-                refreshImages()
+
             })
             const newGridContent = [...gridContent]
             newGridContent[currRow][currCell] = e.target.files[0].name
@@ -157,7 +157,21 @@ export const PageCreator = () => {
         }
     }
 
-    const deleteImage = () => {
+    const deleteImage = (row: number, cell: number) => {
+        fetch("http://localhost:8000/v1/delete-image", {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({filename: gridContent[row][cell]})
+        }).then(res => {
+            const newGridContent = [...gridContent]
+            newGridContent[row][cell] = ""
+            setGridContent(newGridContent)
+        })
+    }
 
     }
 
@@ -174,14 +188,19 @@ export const PageCreator = () => {
             }
         } else if (gridContentType[row][cell] === "Image") {
             if (currRow === row && currCell === cell) {
-                return <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}}>
+                return <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%", margin: "1rem"}}>
                     <h5 style={{marginLeft: "1.5rem", marginRight: "1rem"}}>Upload New Image:</h5>
-                    <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e)}/>
-                    <button onClick={deleteImage}>Delete Uploaded Image</button>
+                    { gridContent[row][cell] === "" ?
+                        <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e)}/> :
+                        <h5 style={{marginRight: "1.5rem"}}><strong>{gridContent[row][cell]}</strong></h5>
+                    }
+                    { gridContent[row][cell] !== "" &&
+                        <button onClick={() => deleteImage(row, cell)}>Delete Current Image</button>
+                    }
                 </div>
             } else {
                 if (gridContent[row][cell] !== "") {
-                    return <img style={{width: "auto", height: "100%"}} src={"http://localhost:8000/static/"+gridContent[row][cell]} alt={gridContent[row][cell]}/>
+                    return <img style={{width: "auto", height: "100%", maxWidth: "100%"}} src={"http://localhost:8000/static/"+gridContent[row][cell]} alt={gridContent[row][cell]}/>
                 }
                 return <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}><h3>No image selected</h3></div>
             }
@@ -271,7 +290,7 @@ export const PageCreator = () => {
                 <button style={{marginLeft: "2rem"}} onClick={createPage}>Create</button>
             </div>
             <hr style={{width: "95%", marginTop: "1rem", marginBottom: "1rem"}}/>
-            <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+            <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", marginLeft: "1.5rem", marginRight: "1.5rem"}}>
                 <h5 style={{marginRight: "1.5rem"}}>Number of Rows: </h5>
                 <input style={{width: "3rem", marginRight: "2.5rem", color: "#f1f7ed"}} type="number" value={numRows} onChange={(e: React.ChangeEvent<HTMLInputElement>) => changeNumRows(parseInt(e.target.value))}/>
                 <h5 style={{marginRight: "1.5rem"}}>Current Row Layout: </h5>
@@ -290,7 +309,7 @@ export const PageCreator = () => {
                 </select>
                 <h5 style={{marginLeft: "2.5rem", marginRight: "1.5rem"}}>Current Row Height: </h5>
                 <input style={{width: "3rem", marginRight: "2.5rem", color: "#f1f7ed"}} type="number" value={currRowHeight} onChange={(e: React.ChangeEvent<HTMLInputElement>) => changeCurrRowHeight(parseInt(e.target.value))}/>
-                <h5 style={{marginLeft: "2.5rem", marginRight: "1.5rem"}}>Current Cell Content Type: </h5>
+                <h5 style={{marginRight: "1.5rem"}}>Current Cell Content Type: </h5>
                 { currCell === -1 ?
                     <h5 style={{width: "10rem", fontWeight: "700"}}>No Cell Selected</h5>
                     :

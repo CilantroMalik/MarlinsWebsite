@@ -8,7 +8,7 @@ export const Home = () => {
     return (
         <div>
             <Header />
-            <button onClick={() => navigate("/pageCreator")}>Go to Page Creator</button>
+            <button style={{marginLeft: "1.5rem"}} onClick={() => navigate("/pageCreator")}>Go to Page Creator</button>
         </div>
     )
 }
