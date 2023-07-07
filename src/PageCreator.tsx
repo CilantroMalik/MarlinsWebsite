@@ -173,10 +173,38 @@ export const PageCreator = () => {
         })
     }
 
+    const handleVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files !== null) {
+            const newGridContent = [...gridContent]
+            newGridContent[currRow][currCell] = e.target.files[0].name
+            let fd = new FormData()
+            fd.append('video', e.target.files[0])
+            fetch("http://localhost:8000/v1/upload-video", {
+                    method: "POST",
+                    mode: 'cors',
+                    headers: {'Access-Control-Allow-Origin': '*'},
+                    body: fd
+                }
+            ).then(res => {
+                setGridContent(newGridContent)
+            })
+        }
     }
 
-    const refreshImages = () => {
-        
+    const deleteVideo = (row: number, cell: number) => {
+        fetch("http://localhost:8000/v1/delete-video", {
+            method: "POST",
+            mode: "cors",
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({filename: gridContent[row][cell]})
+        }).then(res => {
+            const newGridContent = [...gridContent]
+            newGridContent[row][cell] = ""
+            setGridContent(newGridContent)
+        })
     }
 
     const getCellContent = (row: number, cell: number) => {
@@ -203,6 +231,26 @@ export const PageCreator = () => {
                     return <img style={{width: "auto", height: "100%", maxWidth: "100%"}} src={"http://localhost:8000/static/"+gridContent[row][cell]} alt={gridContent[row][cell]}/>
                 }
                 return <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}><h3>No image selected</h3></div>
+            }
+        } else if (gridContentType[row][cell] === "Video") {
+            if (currRow === row && currCell === cell) {
+                return <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%", margin: "1rem"}}>
+                    <h5 style={{marginLeft: "1.5rem", marginRight: "1rem"}}>Upload New Video:</h5>
+                    { gridContent[row][cell] === "" ?
+                        <input type="file" accept="video/*" onChange={(e) => handleVideoUpload(e)}/> :
+                        <h5 style={{marginRight: "1.5rem"}}><strong>{gridContent[row][cell]}</strong></h5>
+                    }
+                    { gridContent[row][cell] !== "" &&
+                    <button onClick={() => deleteVideo(row, cell)}>Delete Current Video</button>
+                    }
+                </div>
+            } else {
+                if (gridContent[row][cell] !== "") {
+                    return <video style={{width: "auto", height: "100%", borderRadius: "1.5rem"}} autoPlay>
+                        <source src={"http://localhost:8000/static/"+gridContent[row][cell]} type="video/mp4"/>
+                    </video>
+                }
+                return <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}><h3>No video selected</h3></div>
             }
         }
         return <div></div>
