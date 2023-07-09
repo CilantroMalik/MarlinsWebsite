@@ -16,7 +16,7 @@ export const PageCreator = () => {
     const [currRowHeight, setCurrRowHeight] = useState(10)
     const [currCell, setCurrCell] = useState(-1)
     const [currCellContent, setCurrCellContent] = useState("Select...")
-    const [test, setTest] = useState("")
+    const [previewMode, setPreviewMode] = useState(false)
 
     const createPage = () => {
         fetch("http://localhost:8000/v1/add-page", {
@@ -106,6 +106,11 @@ export const PageCreator = () => {
     }
 
     const changeCurrCellContent = (newContent: string) => {
+        if (currCellContent === "Image" && newContent !== "Image" && gridContent[currRow][currCell] !== "") {
+            deleteImage(currRow, currCell)
+        } else if (currCellContent === "Video" && newContent !== "Video" && gridContent[currRow][currCell] !== "") {
+            deleteVideo(currRow, currCell)
+        }
         setCurrCellContent(newContent)
         const newGridContentType = [...gridContentType]
         newGridContentType[currRow][currCell] = newContent
@@ -326,6 +331,84 @@ export const PageCreator = () => {
         })
     }
 
+    const togglePreview = () => {
+        if (!previewMode) {
+            setCurrRow(0)
+            setCurrCell(-1)
+        }
+        setPreviewMode(!previewMode)
+    }
+
+    const preview = () => {
+        return Array.from(Array(numRows).keys()).map(n => {
+            const divStyle = {display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "1.5rem", width: "100%", height: gridHeights[n]}
+            switch (gridConfig[n]) {
+                case "1":
+                    return (<div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}} onClick={() => changeCurrRow(n)}>
+                        <div style={{...divStyle, flexDirection: "column", margin: "0.5rem 2rem"}}>{getCellContent(n, 0)}</div>
+                    </div>)
+                case "1-1":
+                    return (<div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}} onClick={() => changeCurrRow(n)}>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 2rem"}}>{getCellContent(n, 0)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 2rem 0.5rem 0.5rem"}}>{getCellContent(n, 1)}</div>
+                    </div>)
+                case "1-1-1":
+                    return (<div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}} onClick={() => changeCurrRow(n)}>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 2rem"}}>{getCellContent(n, 0)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 0.5rem"}}>{getCellContent(n, 1)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 2rem 0.5rem 0.5rem"}}>{getCellContent(n, 2)}</div>
+                    </div>)
+                case "1-2":
+                    return (<div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}} onClick={() => changeCurrRow(n)}>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 2rem", flex: "1 1 0"}}>{getCellContent(n, 0)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 2rem 0.5rem 0.5rem", flex: "2 1 0"}}>{getCellContent(n, 1)}</div>
+                    </div>)
+                case "2-1":
+                    return (<div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}} onClick={() => changeCurrRow(n)}>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 2rem", flex: "2 1 0"}}>{getCellContent(n, 0)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 2rem 0.5rem 0.5rem", flex: "1 1 0"}}>{getCellContent(n, 1)}</div>
+                    </div>)
+                case "1-1-1-1":
+                    return (<div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}} onClick={() => changeCurrRow(n)}>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 2rem"}}>{getCellContent(n, 0)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 0.5rem"}}>{getCellContent(n, 1)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 0.5rem"}}>{getCellContent(n, 2)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 2rem 0.5rem 0.5rem"}}>{getCellContent(n, 3)}</div>
+                    </div>)
+                case "2-1-1":
+                    return (<div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}} onClick={() => changeCurrRow(n)}>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 2rem", flex: "2 1 0"}}>{getCellContent(n, 0)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 0.5rem", flex: "1 1 0"}}>{getCellContent(n, 1)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 2rem 0.5rem 0.5rem", flex: "1 1 0"}}>{getCellContent(n, 2)}</div>
+                    </div>)
+                case "1-2-1":
+                    return (<div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}} onClick={() => changeCurrRow(n)}>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 2rem", flex: "1 1 0"}}>{getCellContent(n, 0)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 0.5rem", flex: "2 1 0"}}>{getCellContent(n, 1)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 2rem 0.5rem 0.5rem", flex: "1 1 0"}}>{getCellContent(n, 2)}</div>
+                    </div>)
+                case "1-1-2":
+                    return (<div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}} onClick={() => changeCurrRow(n)}>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 2rem", flex: "1 1 0"}}>{getCellContent(n, 0)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 0.5rem", flex: "1 1 0"}}>{getCellContent(n, 1)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 2rem 0.5rem 0.5rem", flex: "2 1 0"}}>{getCellContent(n, 2)}</div>
+                    </div>)
+                case "1-3":
+                    return (<div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}} onClick={() => changeCurrRow(n)}>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 2rem", flex: "1 1 0"}}>{getCellContent(n, 0)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 2rem 0.5rem 0.5rem", flex: "3 1 0"}}>{getCellContent(n, 1)}</div>
+                    </div>)
+                case "3-1":
+                    return (<div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", width: "100%"}} onClick={() => changeCurrRow(n)}>
+                        <div style={{...divStyle, margin: "0.5rem 0.5rem 0.5rem 2rem", flex: "3 1 0"}}>{getCellContent(n, 0)}</div>
+                        <div style={{...divStyle, margin: "0.5rem 2rem 0.5rem 0.5rem", flex: "1 1 0"}}>{getCellContent(n, 1)}</div>
+                    </div>)
+                default:
+                    return (<div></div>)
+            }
+        })
+    }
+
     return (
         <div style={{display: "flex", flexDirection: "column"}}>
             <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", marginLeft: "1.5rem", marginRight: "1.5rem"}}>
@@ -369,9 +452,10 @@ export const PageCreator = () => {
                         <option value="Blank">Blank</option>
                     </select>
                 }
+                <button style={{marginLeft: "2.5rem"}} onClick={togglePreview}>{previewMode ? "Exit Preview" : "Preview"}</button>
             </div>
             <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
-                {getGrid()}
+                {previewMode ? preview() : getGrid()}
             </div>
         </div>
     )
