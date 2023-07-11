@@ -159,6 +159,15 @@ export const PageCreator = () => {
             const newGridContent = [...gridContent]
             newGridContent[currRow][currCell] = e.target.files[0].name
             setGridContent(newGridContent)
+
+            // fetch("https://drive.deta.sh/v1/b05J2ikV4iKw/images/files?name="+e.target.files[0].name, {
+            //     method: "POST",
+            //     mode: "no-cors",
+            //     headers: {
+            //         // 'Access-Control-Allow-Origin': '*',
+            //         'X-API-Key': 'b0AYHasuEjqo_X1mJ7Jg1uu4nNt1vK2299BmABZdKWSM3'
+            //     }
+            // })
         }
     }
 
