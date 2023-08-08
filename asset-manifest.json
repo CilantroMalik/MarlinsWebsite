@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/MarlinsWebsite/static/css/main.42a09b79.css",
-    "main.js": "/MarlinsWebsite/static/js/main.af463d9a.js",
+    "main.js": "/MarlinsWebsite/static/js/main.9d8b09bd.js",
     "index.html": "/MarlinsWebsite/index.html",
     "main.42a09b79.css.map": "/MarlinsWebsite/static/css/main.42a09b79.css.map",
-    "main.af463d9a.js.map": "/MarlinsWebsite/static/js/main.af463d9a.js.map"
+    "main.9d8b09bd.js.map": "/MarlinsWebsite/static/js/main.9d8b09bd.js.map"
   },
   "entrypoints": [
     "static/css/main.42a09b79.css",
-    "static/js/main.af463d9a.js"
+    "static/js/main.9d8b09bd.js"
   ]
 }
